@@ -135,8 +135,17 @@ def top_chars(phrase):
     Do not count spaces, but count all other characters.
 
     """
-
-    return []
+    letters = {}
+    top_letters = []
+    for letter in phrase:
+        if letter != ' ':
+            letters[letter.lower()] = letters.get(letter.lower(), 0) + 1
+    # figure out largest value in dict: sorted(letters.values())[-1]
+    # place all keys with that value into a list & return it
+    for letter in letters: # TODO: there's gotta be a shorter way!
+        if letters[letter] == sorted(letters.values())[-1]: 
+            top_letters.append(letter)
+    return top_letters
 
 #####################################################################
 # You can ignore everything below this.
