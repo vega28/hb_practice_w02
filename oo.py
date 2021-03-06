@@ -38,30 +38,11 @@ class Exam:
         self.questions = [] # this will be a list of Question objects
 
     def add_question(self, question):
-        """ Add a Question object to the Exam.
-        e.g.
-            >>> set_q = Question('What is the method for adding an element to a set?')
-            >>> exam = Exam('midterm')
-            >>> exam.add_question(set_q)
-        """
+        """ Add a Question object to the Exam. """
         self.questions.append(question)
 
     def administer(self):
-        """ Administer all examp questions and return user's final score. 
-        e.g.
-            >>> q1 = Question('who is the cutest?','Kepler')
-            >>> q2 = Question('what is your name?','Kelsi')
-            >>> q3 = Question('do you want to play BOTW?','yesss')
-            >>> midterm = Exam('midterm 1')
-            >>> midterm.add_question(q1)
-            >>> midterm.add_question(q2)
-            >>> midterm.add_question(q3)
-            >>> midterm.administer()
-            who is the cutest? >>> Kepler
-            what is your name? >>> me
-            do you want to play BOTW? >>> yesss
-            0.67
-        """
+        """ Administer all examp questions and return user's final score. """
         score = 0
         for q in self.questions:
             if q.ask_and_evaluate():
@@ -69,14 +50,37 @@ class Exam:
         return round(score/len(self.questions),2)
 
 
-# copy-paste into interactive mode to test...
-# q1 = Question('who is the cutest?','Kepler')
-# q2 = Question('what is your name?','Kelsi')
-# q3 = Question('do you want to play BOTW?','yesss')
-# midterm = Exam('midterm 1')
-# midterm.add_question(q1)
-# midterm.add_question(q2)
-# midterm.add_question(q3)
-# midterm.administer()
+
+class StudentExam:
+    """ Create an exam for a Student. """
+    
+    def __init__(self, student, exam):
+        self.first_name = student.first_name
+        self.last_name = student.last_name
+        self.exam = exam
+        self.score = 0
+
+
+    def take_test(self):
+        self.score = self.exam.administer()
+        print(f'Your score on {self.exam.name} is {self.score}')
+
+    
+
+def example():
+    """ Create an example to demonstrate the awesome classes you created. """
+
+    midterm = Exam('Midterm 1')
+    q1 = Question('Who is the cutest?','Kepler')
+    q2 = Question('What is your name?','Kelsi')
+    q3 = Question('Do you want to play BOTW right now?','yesss')
+    midterm.add_question(q1)
+    midterm.add_question(q2)
+    midterm.add_question(q3)
+    kelsi = Student('Kelsi','Flatland','not my address')
+    kelsi_test = StudentExam(kelsi, midterm)
+    kelsi_test.take_test()
+    # is there a way to define user input for the questions in this example?
+
 
 
