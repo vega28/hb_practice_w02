@@ -42,7 +42,7 @@ class Exam:
         self.questions.append(question)
 
     def administer(self):
-        """ Administer all examp questions and return user's final score. """
+        """ Administer all exam questions and return user's final score. """
         score = 0
         for q in self.questions:
             if q.ask_and_evaluate():
@@ -51,23 +51,49 @@ class Exam:
 
 
 
+class Quiz(Exam):
+    """ A quiz is a subclass of exam which is scored as pass/fail. """
+
+    def administer(self):
+        """ Administer all quiz questions and 
+            return 1 if user passed, 0 if not. """
+        score = 0
+        for q in self.questions:
+            if q.ask_and_evaluate():
+                score += 1 # add score
+        return 1 if score/len(self.questions) >= 0.5 else 0
+
+
+
 class StudentExam:
     """ Create an exam for a Student. """
     
-    def __init__(self, student, exam):
+    def __init__(self, student, assessment):
         self.first_name = student.first_name
         self.last_name = student.last_name
-        self.exam = exam
+        self.assessment = assessment
         self.score = 0
 
 
     def take_test(self):
-        self.score = self.exam.administer()
-        print(f'Your score on {self.exam.name} is {self.score}')
+        self.score = self.assessment.administer()
+        print(f'Your score on {self.assessment.name} is {self.score}')
+
+
+
+class StudentQuiz(StudentExam):
+    """ Create a quiz for a student (this is a subclass of StudentExam) """
+
+    def take_quiz(self):
+        self.score = self.assessment.administer()
+        if self.score == 1:
+            print(f'You passed {self.assessment.name}!')
+        else:
+            print(f'You failed {self.assessment.name}. Please study harder next time.')
 
     
 
-def example():
+def exam_example():
     """ Create an example to demonstrate the awesome classes you created. """
 
     midterm = Exam('Midterm 1')
@@ -84,3 +110,16 @@ def example():
 
 
 
+def quiz_example():
+    """ Create an example to demonstrate the awesome subclasses you created. """
+
+    quiz1 = Quiz("Quiz 1")
+    q1 = Question('Who is the cutest?','Kepler')
+    q2 = Question('What is your name?','Kelsi')
+    q3 = Question('Do you want to play BOTW right now?','yesss')
+    quiz1.add_question(q1)
+    quiz1.add_question(q2)
+    quiz1.add_question(q3)
+    kelsi = Student('Kelsi','Flatland','not my address')
+    kelsi_quiz = StudentQuiz(kelsi, quiz1)
+    kelsi_quiz.take_quiz()
