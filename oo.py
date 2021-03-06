@@ -47,7 +47,7 @@ class Exam:
         for q in self.questions:
             if q.ask_and_evaluate():
                 score += 1 # add score
-        return round(score/len(self.questions),2)
+        return round(score/len(self.questions)*100,0)
 
 
 
@@ -57,11 +57,15 @@ class Quiz(Exam):
     def administer(self):
         """ Administer all quiz questions and 
             return 1 if user passed, 0 if not. """
-        score = 0
-        for q in self.questions:
-            if q.ask_and_evaluate():
-                score += 1 # add score
-        return 1 if score/len(self.questions) >= 0.5 else 0
+        # score = 0
+        # for q in self.questions:
+        #     if q.ask_and_evaluate():
+        #         score += 1 # add score
+        # return 1 if score/len(self.questions) >= 0.5 else 0
+
+        # refactored version:
+        score = super(Quiz, self).administer()
+        return 1 if score >= 50 else 0
 
 
 
@@ -69,15 +73,14 @@ class StudentExam:
     """ Create an exam for a Student. """
     
     def __init__(self, student, assessment):
-        self.first_name = student.first_name
-        self.last_name = student.last_name
+        self.student = student
         self.assessment = assessment
         self.score = 0
 
 
     def take_test(self):
         self.score = self.assessment.administer()
-        print(f'Your score on {self.assessment.name} is {self.score}')
+        print(f'Your score on {self.assessment.name} is {self.score}%')
 
 
 
